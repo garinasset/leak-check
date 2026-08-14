@@ -1,5 +1,6 @@
-import re
 from typing import Optional, Iterable
+
+from lib.common import iter_nonempty
 
 
 # ========== 基础脱敏函数 ==========
@@ -91,6 +92,5 @@ def mask_value(field: str, v: Optional[str]) -> str:
 def mask_list(field: str, values: Iterable) -> list[str]:
     return list({
         mask_value(field, v)
-        for v in values
-        if v is not None and str(v).strip()
+        for v in iter_nonempty(values)
     })

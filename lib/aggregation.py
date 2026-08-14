@@ -1,20 +1,20 @@
-from typing import Sequence, Optional, Iterable
+from typing import Iterable, Optional
+
+from lib.common import iter_nonempty
 
 
 def clean_str_set(values: Iterable[Optional[str]]) -> list[str]:
     return list({
-        v.strip()
-        for v in values
-        if v and str(v).strip()
+        str(v).strip()
+        for v in iter_nonempty(values)
     })
 
 
 def clean_int_set(values: Iterable) -> list[int]:
     result = set()
-    for v in values:
+    for v in iter_nonempty(values):
         try:
-            if v is not None and str(v).strip():
-                result.add(int(v))
+            result.add(int(v))
         except (TypeError, ValueError):
             continue
     return list(result)
@@ -23,6 +23,5 @@ def clean_int_set(values: Iterable) -> list[int]:
 def clean_id_set(values: Iterable) -> list[str]:
     return list({
         str(v)
-        for v in values
-        if v is not None
+        for v in iter_nonempty(values)
     })
